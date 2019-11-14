@@ -13,7 +13,7 @@ public class LayeredService {
     public LayeredService(DataLayer dataSource) {
         dataService = dataSource;
     }
-
+    // Ici on a des méthodes qui modifient les données.
     //ecriture en base simulé qu'on mockera
     public void dataPublisher(DataRef data) {
         dataService.save(data);

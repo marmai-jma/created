@@ -1,5 +1,6 @@
 package com.bnpparibas.crafters.tutorial.methods;
 
+import org.assertj.core.api.Assertions;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -25,13 +26,14 @@ public class LayeredServiceTest {
     }
 
     @Test
-    public void data_should_be_found(){
+    public void mock_should_return_provided_instance(){
         DataRef dataFromDependency = new DataRef(UUID.randomUUID(),"donnees");
         Mockito.when(dataSource.fetchDataBy(Mockito.any()))
                 .thenReturn(dataFromDependency);
         DataRef dataRef = service.dataProducerFiltered(UUID.randomUUID());
         System.out.println("result = "+dataRef);  //Par défaut, le mock crée du null, tant qu'on ne manipule rien, ça va
                                                     // RQ un test sans assert est passant mais ne teste rien
+        Assertions.assertThat(dataRef).isSameAs(dataFromDependency);
     }
 
 }

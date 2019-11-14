@@ -13,19 +13,22 @@ import static org.junit.Assert.*;
 //@ExtendWith(MockitoExtension.class) // en Junit 5
 @RunWith(MockitoJUnitRunner.class)  // en Junit 4
 public class LayeredServiceTest {
+    DataLayer dataSource;
     LayeredService service;
 
     @Before  //appelée avant chaque jeu de test
     public void configureMock() throws Exception {
 
         // Factorisation de la création du service
-        //DataLayer dataSource = new DataLayer();   // la vraie classe => exception
-        DataLayer dataSource = Mockito.mock(DataLayer.class); // la version mockée de la ligne du dessus
+        dataSource = Mockito.mock(DataLayer.class); // dataSource ne doit pas être en variable locale pour être utilisé en tests
         service = new LayeredService(dataSource);
     }
 
     @Test
-    public void rename_me(){
+    public void data_should_be_found(){
+        DataRef dataFromDependency = new DataRef(UUID.randomUUID(),"donnees");
+        Mockito.when(dataSource.fetchDataBy(Mockito.any()))
+                .thenReturn(dataFromDependency);
         DataRef dataRef = service.dataProducerFiltered(UUID.randomUUID());
         System.out.println("result = "+dataRef);  //Par défaut, le mock crée du null, tant qu'on ne manipule rien, ça va
                                                     // RQ un test sans assert est passant mais ne teste rien
